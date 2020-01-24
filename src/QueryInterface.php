@@ -8,6 +8,8 @@ interface QueryInterface
 {
     public static function select($table, array $columns = ['*']) : self;
 
+    public static function delete($table) : self;
+
     public static function update($table, array $values) : self;
 
     public function where($key, $value) : self;

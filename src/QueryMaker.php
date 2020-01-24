@@ -26,8 +26,8 @@ class QueryMaker implements QueryInterface
 
     public static function select($table, array $columns = ['*']) : QueryInterface
     {
-        $instance = new QueryMaker();
-        $columnsText     = implode(', ', $columns);
+        $instance            = new QueryMaker();
+        $columnsText         = implode(', ', $columns);
         $instance->statement = 'SELECT ' . $columnsText . ' FROM ' . $table;
         $instance->query     = 'SELECT ' . $columnsText . ' FROM ' . $table;
         return $instance;
@@ -35,10 +35,18 @@ class QueryMaker implements QueryInterface
 
     public static function update($table, array $values) : QueryInterface
     {
-        $instance = new QueryMaker();
+        $instance            = new QueryMaker();
         $instance->statement = 'UPDATE ' . $table . ' SET ';
         $instance->query     = 'UPDATE ' . $table . ' SET ';
         $instance->prepareParams($values, ', ');
+        return $instance;
+    }
+
+    public static function delete($table) : QueryInterface
+    {
+        $instance            = new QueryMaker();
+        $instance->statement = 'DELETE FROM ' . $table;
+        $instance->query     = 'DELETE FROM ' . $table;
         return $instance;
     }
 
