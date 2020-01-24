@@ -30,6 +30,7 @@ $ composer require midorikocak/querymaker
 
 There are starter methods to create a query, such as `SELECT` and `UPDATE`. 
 
+### Select
 
 ``` php
 $queryMaker = new midorikocak\querymaker();
@@ -43,6 +44,7 @@ The above example will output:
 SELECT * FROM users
 ```
 
+### Select with fields
 Fields to select can be specified as well:
 
 ``` php
@@ -55,6 +57,8 @@ The above example will output:
 ``` sql
 SELECT id, email FROM users
 ```
+
+### Where 
 
 To specify `WHERE` clauase use  `where($key, $value)` method.
 
@@ -71,6 +75,8 @@ SELECT id, email FROM users WHERE id='3'
 SELECT id, email FROM users WHERE id=:id
 ```
 
+### AND and OR 
+
 Contraints such as `AND` and `OR`, are methods as well. `and($key, $value)` and `or($key, $value)`
 
 ``` php
@@ -85,6 +91,21 @@ The above example will output:
 SELECT id, email FROM users WHERE id='3' OR username='midori'
 SELECT id, email FROM users WHERE id=:id OR username=:username
 ```
+
+It's also possible to get values as key value pair to easily execute.
+
+``` php
+$db = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+
+
+$queryMaker->select('users', ['id', 'email'])->where('id', 3)->and('email', 'mtkocak@gmail.com')->or('username', 'midori');
+
+$statement = $db->prepare($query->getStatement());
+
+$statement->execute($query->getParams());
+```
+
+### Update 
 
 To specify `UPDATE` operation, handy `update()` method, expects a key value array. All statement params are generated thoroughly. 
 
