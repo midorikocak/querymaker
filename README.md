@@ -56,6 +56,18 @@ The above example will output:
 ``` sql
 SELECT id, email FROM users
 ```
+### Delete
+
+``` php
+$queryMaker = midorikocak\querymaker::delete('users');
+echo $queryMaker->getQuery;
+```
+
+The above example will output:
+
+``` sql
+DELETE FROM users
+```
 
 ### Where 
 

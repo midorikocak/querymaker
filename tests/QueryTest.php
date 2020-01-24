@@ -23,6 +23,13 @@ final class QueryTest extends TestCase
         $this->assertEquals('SELECT * FROM users', $this->queryMaker->getStatement());
     }
 
+    public function testDelete()
+    {
+        $this->queryMaker = QueryMaker::delete('users');
+        $this->assertEquals('DELETE FROM users', $this->queryMaker->getQuery());
+        $this->assertEquals('DELETE FROM users', $this->queryMaker->getStatement());
+    }
+
     public function testSelectFields()
     {
         $this->queryMaker = QueryMaker::select('users', ['id', 'email']);
@@ -35,6 +42,13 @@ final class QueryTest extends TestCase
         $this->queryMaker = QueryMaker::select('users', ['id', 'email'])->where('id', 3);
         $this->assertEquals('SELECT id, email FROM users WHERE id=\'3\'', $this->queryMaker->getQuery());
         $this->assertEquals('SELECT id, email FROM users WHERE id=:id', $this->queryMaker->getStatement());
+    }
+
+    public function testSelectFieldsWhereOperator()
+    {
+        $this->queryMaker = QueryMaker::select('users', ['id', 'email'])->where('id', '>=3');
+        $this->assertEquals('SELECT id, email FROM users WHERE id>=\'3\'', $this->queryMaker->getQuery());
+        $this->assertEquals('SELECT id, email FROM users WHERE id>=:id', $this->queryMaker->getStatement());
     }
 
     public function testUpdate()
