@@ -47,3 +47,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Nothing
+
+## [1.2.0] - 2020-01-23
+
+### Added
+- DELETE
+- Refactored field operator methods
+- Field operator tests and examples
+
+### Deprecated
+- Nothing
+
+### Fixed
+- Examples
+
+### Removed
+- Nothing
+
+### Security
+- Nothing

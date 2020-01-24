@@ -56,6 +56,24 @@ The above example will output:
 ``` sql
 SELECT id, email FROM users
 ```
+
+### Fields with operators
+
+Field values can include operators, such as: `=`,`>`, `<`,`<=`,`>=`
+
+``` php
+$queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', '>=3');
+echo $queryMaker->getQuery;
+echo $queryMaker->getStatement;
+```
+
+The above example will output:
+
+``` sql
+SELECT id, email FROM users WHERE id>='3'
+SELECT id, email FROM users WHERE id>=:id' 
+```
+
 ### Delete
 
 ``` php
@@ -101,6 +119,12 @@ The above example will output:
 ``` sql
 SELECT id, email FROM users WHERE id='3' OR username='midori'
 SELECT id, email FROM users WHERE id=:id OR username=:username
+```
+
+Multiple AND and OR clauses can have same field conditions.
+
+``` php
+$queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('email', 'mtkocak@gmail.com')->and('id', '>3')->and('id', '<5');
 ```
 
 ### Get key value array to execute
