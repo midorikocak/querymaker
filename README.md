@@ -14,6 +14,10 @@ This small library, allows you to create simple SQL queries to use with PDO easi
 
 When using PDO, writing queries are prone to syntax and parameter errors. To prevent them in simple queries you can use this library. 
 
+## Requirements
+
+Strictly requires PHP 7.4.
+
 ## Install
 
 Via Composer
