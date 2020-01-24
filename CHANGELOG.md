@@ -1,13 +1,22 @@
 # Changelog
+All notable changes to this project will be documented in this file.
 
-All notable changes to `querymaker` will be documented in this file.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
+## [Unreleased]
 
-## NEXT - YYYY-MM-DD
+## [1.0.0] - 2020-01-22
 
 ### Added
-- Nothing
+- Query Builder
+- SELECT, UPDATE
+- WHERE
+- AND
+- OR
+- getParams
+- getStatement
+- getQuery
 
 ### Deprecated
 - Nothing
@@ -17,6 +26,24 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ### Removed
 - Nothing
+
+### Security
+- Nothing
+
+## [1.1.0] - 2020-01-23
+
+### Added
+- Static instantiator methods
+- Constructor is private
+
+### Deprecated
+- Nothing
+
+### Fixed
+- Examples
+
+### Removed
+- Public constructor
 
 ### Security
 - Nothing
