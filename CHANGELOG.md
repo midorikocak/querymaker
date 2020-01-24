@@ -66,3 +66,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Nothing
+
+## [1.2.1] - 2020-01-23
+
+### Added
+- Nothing
+
+### Deprecated
+- Nothing
+
+### Fixed
+- Examples, Calls without Brackets.
+
+### Removed
+- Nothing
+
+### Security
+- Nothing

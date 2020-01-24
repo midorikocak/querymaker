@@ -34,7 +34,7 @@ There are starter methods to create a query, such as `SELECT` and `UPDATE`.
 
 ``` php
 $queryMaker = midorikocak\querymaker::select('users');
-echo $queryMaker->getQuery;
+echo $queryMaker->getQuery();
 ```
 
 The above example will output:
@@ -48,7 +48,7 @@ Fields to select can be specified as well:
 
 ``` php
 $queryMaker = midorikocak\querymaker::select('users', ['id', 'email']);
-echo $queryMaker->getQuery;
+echo $queryMaker->getQuery();
 ```
 
 The above example will output:
@@ -63,8 +63,8 @@ Field values can include operators, such as: `=`,`>`, `<`,`<=`,`>=`
 
 ``` php
 $queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', '>=3');
-echo $queryMaker->getQuery;
-echo $queryMaker->getStatement;
+echo $queryMaker->getQuery();
+echo $queryMaker->getStatement();
 ```
 
 The above example will output:
@@ -78,7 +78,7 @@ SELECT id, email FROM users WHERE id>=:id'
 
 ``` php
 $queryMaker = midorikocak\querymaker::delete('users');
-echo $queryMaker->getQuery;
+echo $queryMaker->getQuery();
 ```
 
 The above example will output:
@@ -93,8 +93,8 @@ To specify `WHERE` clauase use  `where($key, $value)` method.
 
 ``` php
 $queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', 3);
-echo $queryMaker->getQuery;
-echo $queryMaker->getStatement;
+echo $queryMaker->getQuery();
+echo $queryMaker->getStatement();
 ```
 
 The above example will output:
@@ -110,8 +110,8 @@ Contraints such as `AND` and `OR`, are methods as well. `and($key, $value)` and 
 
 ``` php
 $queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', 3)->and('email', 'mtkocak@gmail.com')->or('username', 'midori');
-echo $queryMaker->getQuery;
-echo $queryMaker->getStatement;
+echo $queryMaker->getQuery();
+echo $queryMaker->getStatement();
 ```
 
 The above example will output:
@@ -148,8 +148,8 @@ To specify `UPDATE` operation, handy `update()` method, expects a key value arra
 
 ``` php
 $queryMaker = midorikocak\querymaker::update('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak'])->where('id', 3);
-echo $queryMaker->getQuery;
-echo $queryMaker->getStatement;
+echo $queryMaker->getQuery();
+echo $queryMaker->getStatement();
 ```
 
 The above example will output:
