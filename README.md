@@ -112,7 +112,7 @@ $statement->execute($query->getParams());
 To specify `UPDATE` operation, handy `update()` method, expects a key value array. All statement params are generated thoroughly. 
 
 ``` php
-$queryMake->update('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak'])->where('id', 3);
+$queryMaker->update('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak'])->where('id', 3);
 echo $queryMaker->getQuery;
 echo $queryMaker->getStatement;
 ```
