@@ -8,12 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class QueryTest extends TestCase
 {
-    private QueryMaker $queryMaker;
-
-    protected function setUp() : void
-    {
-        $this->queryMaker = new QueryMaker();
-    }
+    private $queryMaker;
 
     protected function tearDown() : void
     {
@@ -23,28 +18,28 @@ final class QueryTest extends TestCase
 
     public function testSelect()
     {
-        $this->queryMaker->select('users');
+        $this->queryMaker = QueryMaker::select('users');
         $this->assertEquals('SELECT * FROM users', $this->queryMaker->getQuery());
         $this->assertEquals('SELECT * FROM users', $this->queryMaker->getStatement());
     }
 
     public function testSelectFields()
     {
-        $this->queryMaker->select('users', ['id', 'email']);
+        $this->queryMaker = QueryMaker::select('users', ['id', 'email']);
         $this->assertEquals('SELECT id, email FROM users', $this->queryMaker->getQuery());
         $this->assertEquals('SELECT id, email FROM users', $this->queryMaker->getStatement());
     }
 
     public function testSelectFieldsWhere()
     {
-        $this->queryMaker->select('users', ['id', 'email'])->where('id', 3);
+        $this->queryMaker = QueryMaker::select('users', ['id', 'email'])->where('id', 3);
         $this->assertEquals('SELECT id, email FROM users WHERE id=\'3\'', $this->queryMaker->getQuery());
         $this->assertEquals('SELECT id, email FROM users WHERE id=:id', $this->queryMaker->getStatement());
     }
 
     public function testUpdate()
     {
-        $this->queryMaker->update('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak'])->where(
+        $this->queryMaker = QueryMaker::update('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak'])->where(
             'id',
             3
         );
@@ -60,7 +55,7 @@ final class QueryTest extends TestCase
 
     public function testWhereAnd()
     {
-        $this->queryMaker->select('users', ['id', 'email'])->where('id', 3)->and('username', 'midori');
+        $this->queryMaker = QueryMaker::select('users', ['id', 'email'])->where('id', 3)->and('username', 'midori');
         $this->assertEquals(
             "SELECT id, email FROM users WHERE id='3' AND username='midori'",
             $this->queryMaker->getQuery()
@@ -73,7 +68,7 @@ final class QueryTest extends TestCase
 
     public function testWhereOr()
     {
-        $this->queryMaker->select('users', ['id', 'email'])->where('id', 3)->or('username', 'midori');
+        $this->queryMaker = QueryMaker::select('users', ['id', 'email'])->where('id', 3)->or('username', 'midori');
         $this->assertEquals(
             "SELECT id, email FROM users WHERE id='3' OR username='midori'",
             $this->queryMaker->getQuery()
@@ -86,7 +81,7 @@ final class QueryTest extends TestCase
 
     public function testWhereAndOr()
     {
-        $this->queryMaker->select('users', ['id', 'email'])->where(
+        $this->queryMaker = QueryMaker::select('users', ['id', 'email'])->where(
             'id',
             3
         )->and('email', 'mtkocak@gmail.com')->or('username', 'midori');

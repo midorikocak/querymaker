@@ -17,27 +17,29 @@ class QueryMaker implements QueryInterface
     private string $statement;
     private array $params;
 
-    public function __construct()
+    private function __construct()
     {
         $this->query     = '';
         $this->statement = '';
         $this->params    = [];
     }
 
-    public function select($table, array $columns = ['*']) : QueryInterface
+    public static function select($table, array $columns = ['*']) : QueryInterface
     {
+        $instance = new QueryMaker();
         $columnsText     = implode(', ', $columns);
-        $this->statement = 'SELECT ' . $columnsText . ' FROM ' . $table;
-        $this->query     = 'SELECT ' . $columnsText . ' FROM ' . $table;
-        return $this;
+        $instance->statement = 'SELECT ' . $columnsText . ' FROM ' . $table;
+        $instance->query     = 'SELECT ' . $columnsText . ' FROM ' . $table;
+        return $instance;
     }
 
-    public function update($table, array $values) : QueryInterface
+    public static function update($table, array $values) : QueryInterface
     {
-        $this->statement = 'UPDATE ' . $table . ' SET ';
-        $this->query     = 'UPDATE ' . $table . ' SET ';
-        $this->prepareParams($values, ', ');
-        return $this;
+        $instance = new QueryMaker();
+        $instance->statement = 'UPDATE ' . $table . ' SET ';
+        $instance->query     = 'UPDATE ' . $table . ' SET ';
+        $instance->prepareParams($values, ', ');
+        return $instance;
     }
 
     public function where($key, $value) : QueryInterface

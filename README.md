@@ -33,8 +33,7 @@ There are starter methods to create a query, such as `SELECT` and `UPDATE`.
 ### Select
 
 ``` php
-$queryMaker = new midorikocak\querymaker();
-$queryMaker->select('users');
+$queryMaker = midorikocak\querymaker::select('users');
 echo $queryMaker->getQuery;
 ```
 
@@ -48,7 +47,7 @@ SELECT * FROM users
 Fields to select can be specified as well:
 
 ``` php
-$queryMaker->select('users', ['id', 'email']);
+$queryMaker = midorikocak\querymaker::select('users', ['id', 'email']);
 echo $queryMaker->getQuery;
 ```
 
@@ -63,7 +62,7 @@ SELECT id, email FROM users
 To specify `WHERE` clauase use  `where($key, $value)` method.
 
 ``` php
-$queryMaker>select('users', ['id', 'email'])->where('id', 3);
+$queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', 3);
 echo $queryMaker->getQuery;
 echo $queryMaker->getStatement;
 ```
@@ -80,7 +79,7 @@ SELECT id, email FROM users WHERE id=:id
 Contraints such as `AND` and `OR`, are methods as well. `and($key, $value)` and `or($key, $value)`
 
 ``` php
-$queryMaker->select('users', ['id', 'email'])->where('id', 3)->and('email', 'mtkocak@gmail.com')->or('username', 'midori');
+$queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', 3)->and('email', 'mtkocak@gmail.com')->or('username', 'midori');
 echo $queryMaker->getQuery;
 echo $queryMaker->getStatement;
 ```
@@ -100,7 +99,7 @@ It's also possible to get values as key value pair to easily execute.
 $db = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
 
 
-$queryMaker->select('users', ['id', 'email'])->where('id', 3)->and('email', 'mtkocak@gmail.com')->or('username', 'midori');
+$queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', 3)->and('email', 'mtkocak@gmail.com')->or('username', 'midori');
 
 $statement = $db->prepare($query->getStatement());
 
@@ -112,7 +111,7 @@ $statement->execute($query->getParams());
 To specify `UPDATE` operation, handy `update()` method, expects a key value array. All statement params are generated thoroughly. 
 
 ``` php
-$queryMaker->update('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak'])->where('id', 3);
+$queryMaker = midorikocak\querymaker::update('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak'])->where('id', 3);
 echo $queryMaker->getQuery;
 echo $queryMaker->getStatement;
 ```
