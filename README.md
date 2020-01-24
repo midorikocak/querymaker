@@ -92,6 +92,8 @@ SELECT id, email FROM users WHERE id='3' OR username='midori'
 SELECT id, email FROM users WHERE id=:id OR username=:username
 ```
 
+### Get key value array to execute
+
 It's also possible to get values as key value pair to easily execute.
 
 ``` php
