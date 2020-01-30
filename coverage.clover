@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1580362408">
+  <project timestamp="1580362408">
+    <file name="/Users/midorikocak/Documents/src/querymaker/src/QueryInterface.php">
+      <metrics loc="30" ncloc="30" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <package name="midorikocak\querymaker">
+      <file name="/Users/midorikocak/Documents/src/querymaker/src/QueryMaker.php">
+        <class name="midorikocak\querymaker\QueryMaker" namespace="midorikocak\querymaker">
+          <metrics complexity="20" methods="15" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="69" coveredstatements="59" elements="84" coveredelements="71"/>
+        </class>
+        <line num="23" type="method" name="__construct" visibility="private" complexity="1" crap="1" count="10"/>
+        <line num="25" type="stmt" count="10"/>
+        <line num="26" type="stmt" count="10"/>
+        <line num="27" type="stmt" count="10"/>
+        <line num="28" type="stmt" count="10"/>
+        <line num="30" type="method" name="select" visibility="public" complexity="1" crap="1" count="7"/>
+        <line num="32" type="stmt" count="7"/>
+        <line num="33" type="stmt" count="7"/>
+        <line num="34" type="stmt" count="7"/>
+        <line num="35" type="stmt" count="7"/>
+        <line num="36" type="stmt" count="7"/>
+        <line num="39" type="method" name="update" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="41" type="stmt" count="1"/>
+        <line num="42" type="stmt" count="1"/>
+        <line num="43" type="stmt" count="1"/>
+        <line num="44" type="stmt" count="1"/>
+        <line num="45" type="stmt" count="1"/>
+        <line num="48" type="method" name="insert" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="50" type="stmt" count="1"/>
+        <line num="51" type="stmt" count="1"/>
+        <line num="52" type="stmt" count="1"/>
+        <line num="54" type="stmt" count="1"/>
+        <line num="55" type="stmt" count="1"/>
+        <line num="56" type="stmt" count="1"/>
+        <line num="58" type="stmt" count="1"/>
+        <line num="61" type="method" name="delete" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="63" type="stmt" count="1"/>
+        <line num="64" type="stmt" count="1"/>
+        <line num="65" type="stmt" count="1"/>
+        <line num="66" type="stmt" count="1"/>
+        <line num="69" type="method" name="where" visibility="public" complexity="1" crap="1" count="6"/>
+        <line num="71" type="stmt" count="6"/>
+        <line num="72" type="stmt" count="6"/>
+        <line num="73" type="stmt" count="6"/>
+        <line num="74" type="stmt" count="6"/>
+        <line num="75" type="stmt" count="6"/>
+        <line num="78" type="method" name="and" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="80" type="stmt" count="2"/>
+        <line num="81" type="stmt" count="2"/>
+        <line num="82" type="stmt" count="2"/>
+        <line num="83" type="stmt" count="2"/>
+        <line num="86" type="method" name="or" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="88" type="stmt" count="2"/>
+        <line num="89" type="stmt" count="2"/>
+        <line num="90" type="stmt" count="2"/>
+        <line num="91" type="stmt" count="2"/>
+        <line num="94" type="method" name="between" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="96" type="stmt" count="0"/>
+        <line num="97" type="stmt" count="0"/>
+        <line num="99" type="stmt" count="0"/>
+        <line num="100" type="stmt" count="0"/>
+        <line num="101" type="stmt" count="0"/>
+        <line num="104" type="method" name="getQuery" visibility="public" complexity="1" crap="1" count="10"/>
+        <line num="106" type="stmt" count="10"/>
+        <line num="109" type="method" name="getStatement" visibility="public" complexity="1" crap="1" count="10"/>
+        <line num="111" type="stmt" count="10"/>
+        <line num="114" type="method" name="getParams" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="116" type="stmt" count="0"/>
+        <line num="119" type="method" name="prepareParams" visibility="private" complexity="3" crap="3.17" count="4"/>
+        <line num="121" type="stmt" count="4"/>
+        <line num="122" type="stmt" count="4"/>
+        <line num="124" type="stmt" count="4"/>
+        <line num="125" type="stmt" count="4"/>
+        <line num="126" type="stmt" count="4"/>
+        <line num="127" type="stmt" count="4"/>
+        <line num="128" type="stmt" count="4"/>
+        <line num="130" type="stmt" count="4"/>
+        <line num="132" type="stmt" count="0"/>
+        <line num="133" type="stmt" count="0"/>
+        <line num="134" type="stmt" count="0"/>
+        <line num="136" type="stmt" count="0"/>
+        <line num="140" type="stmt" count="4"/>
+        <line num="141" type="stmt" count="4"/>
+        <line num="142" type="stmt" count="4"/>
+        <line num="144" type="method" name="getOperator" visibility="private" complexity="2" crap="2" count="6"/>
+        <line num="146" type="stmt" count="6"/>
+        <line num="147" type="stmt" count="6"/>
+        <line num="148" type="stmt" count="1"/>
+        <line num="149" type="stmt" count="1"/>
+        <line num="151" type="stmt" count="5"/>
+        <line num="154" type="stmt" count="6"/>
+        <line num="157" type="method" name="prepareParam" visibility="private" complexity="1" crap="1" count="3"/>
+        <line num="159" type="stmt" count="3"/>
+        <line num="160" type="stmt" count="3"/>
+        <metrics loc="161" ncloc="161" classes="1" methods="15" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="69" coveredstatements="59" elements="84" coveredelements="71"/>
+      </file>
+    </package>
+    <metrics files="2" loc="191" ncloc="191" classes="1" methods="15" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="69" coveredstatements="59" elements="84" coveredelements="71"/>
+  </project>
+</coverage>
