@@ -21,7 +21,7 @@
     },
     "require-dev": {
         "opsway/psr12-strict-coding-standard": "^0.3.0",
-        "phpunit/phpunit": ">=8.0",
+        "phpunit/phpunit": "@dev",
         "squizlabs/php_codesniffer": "^3.0"
     },
     "autoload": {
