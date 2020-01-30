@@ -48,12 +48,13 @@ class QueryMaker implements QueryInterface
     public static function insert($table, array $values) : QueryInterface
     {
         $fields      = implode(', ', array_keys($values));
-        $params      = implode(', ', array_map(fn($key)=>':' . $key, array_keys($values)));
-        $queryValues = implode(', ', array_map(fn($value)=> "'$value'", array_values($values)));
+        $params      = implode(', ', array_map(fn($key) => ':' . $key, array_keys($values)));
+        $queryValues = implode(', ', array_map(fn($value) => "'$value'", array_values($values)));
 
         $instance            = new QueryMaker();
         $instance->statement = "INSERT INTO $table ($fields) VALUES ($params)";
         $instance->query     = "INSERT INTO $table ($fields) VALUES ($queryValues)";
+        $instance->params    = $values;
 
         return $instance;
     }
