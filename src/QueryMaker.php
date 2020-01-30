@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace midorikocak\querymaker;
 
+use function array_keys;
+use function array_map;
+use function array_values;
 use function implode;
 use function preg_match;
 use function reset;
@@ -39,6 +42,19 @@ class QueryMaker implements QueryInterface
         $instance->statement = 'UPDATE ' . $table . ' SET ';
         $instance->query     = 'UPDATE ' . $table . ' SET ';
         $instance->prepareParams($values, ', ');
+        return $instance;
+    }
+
+    public static function insert($table, array $values) : QueryInterface
+    {
+        $fields      = implode(', ', array_keys($values));
+        $params      = implode(', ', array_map(fn($key)=>':' . $key, array_keys($values)));
+        $queryValues = implode(', ', array_map(fn($value)=> "'$value'", array_values($values)));
+
+        $instance            = new QueryMaker();
+        $instance->statement = "INSERT INTO $table ($fields) VALUES ($params)";
+        $instance->query     = "INSERT INTO $table ($fields) VALUES ($queryValues)";
+
         return $instance;
     }
 

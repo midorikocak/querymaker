@@ -67,6 +67,20 @@ final class QueryTest extends TestCase
         );
     }
 
+    public function testInsert()
+    {
+        $this->queryMaker = QueryMaker::insert('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak']);
+
+        $this->assertEquals(
+            "INSERT INTO users (email, username) VALUES ('mtkocak@gmail.com', 'midorikocak')",
+            $this->queryMaker->getQuery()
+        );
+        $this->assertEquals(
+            "INSERT INTO users (email, username) VALUES (:email, :username)",
+            $this->queryMaker->getStatement()
+        );
+    }
+
     public function testWhereAnd()
     {
         $this->queryMaker = QueryMaker::select('users', ['id', 'email'])->where('id', 3)->and('username', 'midori');

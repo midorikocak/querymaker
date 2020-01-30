@@ -142,6 +142,24 @@ $statement = $db->prepare($query->getStatement());
 $statement->execute($query->getParams());
 ```
 
+### Insert 
+
+To specify `INSERT` operation,  `insert()` method, expects a key value array.
+
+``` php
+$queryMaker = midorikocak\querymaker::insert('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak']);
+echo $queryMaker->getQuery();
+echo $queryMaker->getStatement();
+```
+
+The above example will output:
+
+``` sql
+INSERT INTO users (email, username) VALUES ('mtkocak@gmail.com', 'midorikocak')
+INSERT INTO users (email, username) VALUES (:email, :username)
+```
+
+
 ### Update 
 
 To specify `UPDATE` operation, handy `update()` method, expects a key value array. All statement params are generated thoroughly. 
@@ -159,6 +177,25 @@ UPDATE users SET email='mtkocak@gmail.com', username='midorikocak' WHERE id='3'
 UPDATE users SET email=:email, username=:username WHERE id=:id
 ```
 
+
+## Warning
+
+This library is for educational purposes. Use at your own risk. Exposing query values and using it would create security issues. 
+
+### Ambiguity
+There is also an ambiguity. The library checks for an operator in a value and uses it:
+
+``` php
+$queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', '>=3');
+```
+
+Will always result to:
+
+``` sql
+SELECT id, email FROM users WHERE id>='3'
+```
+
+This issue will be fixed in later releases.
 
 ## Change log
 

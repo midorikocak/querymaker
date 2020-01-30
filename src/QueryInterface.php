@@ -12,6 +12,8 @@ interface QueryInterface
 
     public static function update($table, array $values) : self;
 
+    public static function insert($table, array $values) : self;
+
     public function where($key, $value) : self;
 
     public function and($key, $value) : self;
