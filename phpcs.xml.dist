@@ -17,5 +17,17 @@
     <file>test</file>
 
     <!-- Include all rules from the Zend Coding Standard -->
-    <rule ref="OpsWayStrictPSR12CodingStandard"/>
+    <rule ref="OpsWayStrictPSR12CodingStandard">
+        <exclude name="WebimpressCodingStandard.Functions.Param.MissingSpecification"/>
+        <exclude name="WebimpressCodingStandard.Formatting.ReturnType.SpacesBeforeColon"/>
+        <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSame"/>
+        <exclude name="WebimpressCodingStandard.Arrays.DoubleArrow.SpacesBefore"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing.IncorrectWhitespaceBeforeColon"/>
+    </rule>
+    <rule ref="Generic.Formatting.SpaceAfterNot">
+        <properties>
+            <property name="spacing" value="0"/>
+        </properties>
+    </rule>
 </ruleset>
+

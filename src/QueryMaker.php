@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace midorikocak\querymaker;
 
+use InvalidArgumentException;
+
 use function array_keys;
 use function array_map;
 use function array_values;
 use function implode;
-use function preg_match;
-use function reset;
-use function strlen;
-use function substr;
+use function in_array;
 use function uniqid;
 
 class QueryMaker implements QueryInterface
@@ -19,12 +18,18 @@ class QueryMaker implements QueryInterface
     private string $query;
     private string $statement;
     private array $params;
+    private string $offset;
+    private string $limit;
+    private string $orderBy;
 
     private function __construct()
     {
         $this->query     = '';
         $this->statement = '';
         $this->params    = [];
+
+        $this->limit   = '';
+        $this->orderBy = '';
     }
 
     public static function select($table, array $columns = ['*']) : QueryInterface
@@ -67,25 +72,48 @@ class QueryMaker implements QueryInterface
         return $instance;
     }
 
-    public function where($key, $value) : QueryInterface
+    public function where($key, $value, string $operator = '=') : QueryInterface
     {
-        $operator           = $this->getOperator($value);
+        $this->checkOperator($operator);
+
         $this->statement   .= ' WHERE ' . $key . $operator . ':' . $key;
         $this->query       .= ' WHERE ' . $key . $operator . '\'' . $value . '\'';
         $this->params[$key] = $value;
         return $this;
     }
 
-    public function and($key, $value) : QueryInterface
+    public function and($key, $value, string $operator = '=') : QueryInterface
     {
-        $this->query     .= " AND ";
-        $this->statement .= " AND ";
-        $this->prepareParam($key, $value, 'AND');
+        $this->checkOperator($operator);
+
+        $this->query     .= ' AND ';
+        $this->statement .= ' AND ';
+        $this->prepareParam($key, $value, 'AND', $operator);
         return $this;
     }
 
-    public function or($key, $value) : QueryInterface
+    public function orderBy($key, string $order = 'ASC') : QueryInterface
     {
+        $this->orderBy .= ' ORDER BY ' . $key . ' ' . $order;
+        return $this;
+    }
+
+    public function limit(int $limit) : QueryInterface
+    {
+        $this->limit .= ' LIMIT ' . $limit;
+        return $this;
+    }
+
+    public function offset(int $offset) : QueryInterface
+    {
+        $this->limit .= ' OFFSET ' . $offset;
+        return $this;
+    }
+
+    public function or($key, $value, $operator = '=') : QueryInterface
+    {
+        $this->checkOperator($operator);
+
         $this->query     .= " OR ";
         $this->statement .= " OR ";
         $this->prepareParam($key, $value, 'OR');
@@ -104,12 +132,12 @@ class QueryMaker implements QueryInterface
 
     public function getQuery() : string
     {
-        return $this->query;
+        return $this->query . $this->orderBy . $this->limit;
     }
 
     public function getStatement() : string
     {
-        return $this->statement;
+        return $this->statement . $this->orderBy . $this->limit;
     }
 
     public function getParams() : array
@@ -117,14 +145,14 @@ class QueryMaker implements QueryInterface
         return $this->params;
     }
 
-    private function prepareParams(array $values, string $glue)
+    private function prepareParams(array $values, string $glue, string $operator = '=')
     {
+        $this->checkOperator($operator);
         $params      = [];
         $queryValues = [];
 
         foreach ($values as $key => $value) {
-            $operator = $this->getOperator($value);
-            if (! isset($this->params[$key])) {
+            if (!isset($this->params[$key])) {
                 $queryValues[] = $key . $operator . '\'' . $value . '\'';
                 $params []     = $key . $operator . ':' . $key;
 
@@ -142,21 +170,16 @@ class QueryMaker implements QueryInterface
         $this->statement .= implode($glue, $params);
     }
 
-    private function getOperator(&$value)
+    private function prepareParam(string $key, $value, string $glue, $operator = '=') : void
     {
-        $hasOperator = preg_match('~^(([<>=])+(=)*)~', (string) $value, $matches);
-        if (! empty($hasOperator)) {
-            $operator = reset($matches);
-            $value    = substr($value, strlen($operator));
-        } else {
-            $operator = '=';
-        }
-
-        return $operator;
+        $this->prepareParams([$key => $value], $glue, $operator);
     }
 
-    private function prepareParam(string $key, $value, string $glue)
+    private function checkOperator(string $operator) : void
     {
-        $this->prepareParams([$key => $value], $glue);
+        $operators = ['=', '>', '>=', '<', '<=', 'LIKE'];
+        if (!in_array($operator, $operators, true)) {
+            throw new InvalidArgumentException('Invalid Operator');
+        }
     }
 }

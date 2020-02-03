@@ -10,20 +10,41 @@ final class QueryTest extends TestCase
 {
     private $queryMaker;
 
-    protected function tearDown() : void
+    protected function tearDown(): void
     {
         parent::tearDown();
         unset($this->queryMaker);
     }
 
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->queryMaker = QueryMaker::select('users');
         $this->assertEquals('SELECT * FROM users', $this->queryMaker->getQuery());
         $this->assertEquals('SELECT * FROM users', $this->queryMaker->getStatement());
     }
 
-    public function testDelete()
+    public function testOrder(): void
+    {
+        $this->queryMaker = QueryMaker::select('users')->orderBy('id');
+        $this->assertEquals('SELECT * FROM users ORDER BY id ASC', $this->queryMaker->getQuery());
+        $this->assertEquals('SELECT * FROM users ORDER BY id ASC', $this->queryMaker->getStatement());
+    }
+
+    public function testLimit(): void
+    {
+        $this->queryMaker = QueryMaker::select('users')->orderBy('id')->limit(3);
+        $this->assertEquals('SELECT * FROM users ORDER BY id ASC LIMIT 3', $this->queryMaker->getQuery());
+        $this->assertEquals('SELECT * FROM users ORDER BY id ASC LIMIT 3', $this->queryMaker->getStatement());
+    }
+
+    public function testOffset(): void
+    {
+        $this->queryMaker = QueryMaker::select('users')->orderBy('id')->limit(3)->offset(2);
+        $this->assertEquals('SELECT * FROM users ORDER BY id ASC LIMIT 3 OFFSET 2', $this->queryMaker->getQuery());
+        $this->assertEquals('SELECT * FROM users ORDER BY id ASC LIMIT 3 OFFSET 2', $this->queryMaker->getStatement());
+    }
+
+    public function testDelete(): void
     {
         $this->queryMaker = QueryMaker::delete('users');
         $this->assertEquals('DELETE FROM users', $this->queryMaker->getQuery());
@@ -46,14 +67,17 @@ final class QueryTest extends TestCase
 
     public function testSelectFieldsWhereOperator()
     {
-        $this->queryMaker = QueryMaker::select('users', ['id', 'email'])->where('id', '>=3');
+        $this->queryMaker = QueryMaker::select('users', ['id', 'email'])->where('id', '3', '>=');
         $this->assertEquals('SELECT id, email FROM users WHERE id>=\'3\'', $this->queryMaker->getQuery());
         $this->assertEquals('SELECT id, email FROM users WHERE id>=:id', $this->queryMaker->getStatement());
     }
 
     public function testUpdate()
     {
-        $this->queryMaker = QueryMaker::update('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak'])->where(
+        $this->queryMaker = QueryMaker::update('users', [
+            'email' => 'mtkocak@gmail.com',
+            'username' => 'midorikocak',
+        ])->where(
             'id',
             3
         );

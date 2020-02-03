@@ -57,12 +57,12 @@ The above example will output:
 SELECT id, email FROM users
 ```
 
-### Fields with operators
+### Fields with different operators
 
 Field values can include operators, such as: `=`,`>`, `<`,`<=`,`>=`
 
 ``` php
-$queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', '>=3');
+$queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', '3', '>=');
 echo $queryMaker->getQuery();
 echo $queryMaker->getStatement();
 ```
@@ -127,6 +127,37 @@ Multiple AND and OR clauses can have same field conditions.
 $queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('email', 'mtkocak@gmail.com')->and('id', '>3')->and('id', '<5');
 ```
 
+### ORDER BY 
+
+To specify `ORDER BY` clauase use  `order($key, $order)` method.
+
+``` php
+$queryMaker = QueryMaker::select('users')->orderBy('id');
+echo $queryMaker->getQuery();
+
+```
+
+The above example will output:
+
+``` sql
+SELECT * FROM users ORDER BY id ASC
+```
+
+### OFFSET and LIMIT 
+
+To specify `OFFSET` and `LIMIT` clauase use  `offset($offset)` and `limit($offset)` methods.
+
+``` php
+$queryMaker = QueryMaker::select('users')->orderBy('id')->limit(3)->offset(2);
+echo $queryMaker->getQuery();
+```
+
+The above example will output:
+
+``` sql
+SELECT * FROM users ORDER BY id ASC LIMIT 3 OFFSET 2
+```
+
 ### Get key value array to execute
 
 It's also possible to get values as key value pair to easily execute.
@@ -181,21 +212,6 @@ UPDATE users SET email=:email, username=:username WHERE id=:id
 ## Warning
 
 This library is for educational purposes. Use at your own risk. Exposing query values and using it would create security issues. 
-
-### Ambiguity
-There is also an ambiguity. The library checks for an operator in a value and uses it:
-
-``` php
-$queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', '>=3');
-```
-
-Will always result to:
-
-``` sql
-SELECT id, email FROM users WHERE id>='3'
-```
-
-This issue will be fixed in later releases.
 
 ## Change log
 
