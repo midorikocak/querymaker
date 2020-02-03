@@ -94,6 +94,10 @@ class QueryMaker implements QueryInterface
 
     public function orderBy($key, string $order = 'ASC') : QueryInterface
     {
+        if ($order !== 'DESC' && $order !== 'ASC') {
+            throw new InvalidArgumentException('Invalid order value');
+        }
+        
         $this->orderBy .= ' ORDER BY ' . $key . ' ' . $order;
         return $this;
     }
