@@ -118,7 +118,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing
 
-## [1.2.4] - 2020-02-03
+## [1.3] - 2020-02-03
 
 ### Added
 - Order By
