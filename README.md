@@ -32,7 +32,7 @@ There are starter methods to create a query, such as `SELECT` and `UPDATE`.
 
 ### Select
 
-``` php
+```php
 $queryMaker = new QueryMaker();
 $queryMaker->select('users');
 echo $queryMaker->getQuery();
@@ -47,7 +47,7 @@ SELECT * FROM users
 ### Select with fields
 Fields to select can be specified as well:
 
-``` php
+```php
 $queryMaker = new QueryMaker();
 $queryMaker->select('users', ['id', 'email']);
 echo $queryMaker->getQuery();
@@ -63,7 +63,7 @@ SELECT id, email FROM users
 
 Field values can include operators, such as: `=`,`>`, `<`,`<=`,`>=`
 
-``` php
+```php
 $queryMaker = new QueryMaker();
 $queryMaker->select('users', ['id', 'email'])->where('id', '3', '>=');
 echo $queryMaker->getQuery();
@@ -79,7 +79,7 @@ SELECT id, email FROM users WHERE id>=:id'
 
 ### Delete
 
-``` php
+```php
 $queryMaker = new QueryMaker();
 $queryMaker->delete('users');
 echo $queryMaker->getQuery();
@@ -95,7 +95,7 @@ DELETE FROM users
 
 To specify `WHERE` clauase use  `where($key, $value)` method.
 
-``` php
+```php
 $queryMaker = new QueryMaker();
 $queryMaker->select('users', ['id', 'email'])->where('id', 3);
 echo $queryMaker->getQuery();
@@ -113,7 +113,7 @@ SELECT id, email FROM users WHERE id=:id
 
 Contraints such as `AND` and `OR`, are methods as well. `and($key, $value)` and `or($key, $value)`
 
-``` php
+```php
 $queryMaker = new QueryMaker();
 $queryMaker->select('users', ['id', 'email'])->where('id', 3)->and('email', 'mtkocak@gmail.com')->or('username', 'midori');
 echo $queryMaker->getQuery();
@@ -129,7 +129,7 @@ SELECT id, email FROM users WHERE id=:id OR username=:username
 
 Multiple AND and OR clauses can have same field conditions.
 
-``` php
+```php
 $queryMaker = new QueryMaker();
 $queryMaker->select('users', ['id', 'email'])->where('email', 'mtkocak@gmail.com')->and('id', '>3')->and('id', '<5');
 ```
@@ -138,7 +138,7 @@ $queryMaker->select('users', ['id', 'email'])->where('email', 'mtkocak@gmail.com
 
 To specify `ORDER BY` clauase use  `order($key, $order)` method.
 
-``` php
+```php
 $queryMaker = new QueryMaker();
 $queryMaker->select('users')->orderBy('id');
 echo $queryMaker->getQuery();
@@ -155,7 +155,7 @@ SELECT * FROM users ORDER BY id ASC
 
 To specify `OFFSET` and `LIMIT` clauase use  `offset($offset)` and `limit($offset)` methods.
 
-``` php
+```php
 $queryMaker = new QueryMaker();
 $queryMaker->select('users')->orderBy('id')->limit(3)->offset(2);
 echo $queryMaker->getQuery();
@@ -171,7 +171,7 @@ SELECT * FROM users ORDER BY id ASC LIMIT 3 OFFSET 2
 
 It's also possible to get values as key value pair to easily execute.
 
-``` php
+```php
 $db = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
 
 $queryMaker = new QueryMaker();
@@ -187,7 +187,7 @@ $statement->execute($query->getParams());
 
 To specify `INSERT` operation,  `insert()` method, expects a key value array.
 
-``` php
+```php
 
 $queryMaker = new QueryMaker();
 $queryMaker->insert('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak']);
@@ -207,7 +207,7 @@ INSERT INTO users (email, username) VALUES (:email, :username)
 
 To specify `UPDATE` operation, handy `update()` method, expects a key value array. All statement params are generated thoroughly. 
 
-``` php
+```php
 $queryMaker = new QueryMaker();
 $queryMaker->update('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak'])->where('id', 3);
 echo $queryMaker->getQuery();
