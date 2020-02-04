@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace midorikocak\querymaker;
 
-use Exception;
 use InvalidArgumentException;
 
 use function array_keys;
@@ -25,6 +24,11 @@ class QueryMaker implements QueryInterface
 
     public function __construct()
     {
+        $this->reset();
+    }
+
+    private function reset(): void
+    {
         $this->query = '';
         $this->statement = '';
         $this->params = [];
@@ -35,8 +39,7 @@ class QueryMaker implements QueryInterface
 
     public function select($table, array $columns = ['*']): QueryInterface
     {
-        $this->checkInitialized();
-
+        $this->reset();
         $columnsText = implode(', ', $columns);
         $this->statement = 'SELECT ' . $columnsText . ' FROM ' . $table;
         $this->query = 'SELECT ' . $columnsText . ' FROM ' . $table;
@@ -45,8 +48,7 @@ class QueryMaker implements QueryInterface
 
     public function update($table, array $values): QueryInterface
     {
-        $this->checkInitialized();
-
+        $this->reset();
         $this->statement = 'UPDATE ' . $table . ' SET ';
         $this->query = 'UPDATE ' . $table . ' SET ';
         $this->prepareParams($values, ', ');
@@ -55,7 +57,7 @@ class QueryMaker implements QueryInterface
 
     public function insert($table, array $values): QueryInterface
     {
-        $this->checkInitialized();
+        $this->reset();
         $fields = implode(', ', array_keys($values));
         $params = implode(', ', array_map(fn($key) => ':' . $key, array_keys($values)));
         $queryValues = implode(', ', array_map(fn($value) => "'$value'", array_values($values)));
@@ -69,7 +71,7 @@ class QueryMaker implements QueryInterface
 
     public function delete($table): QueryInterface
     {
-        $this->checkInitialized();
+        $this->reset();
         $this->statement = 'DELETE FROM ' . $table;
         $this->query = 'DELETE FROM ' . $table;
         return $this;
@@ -187,13 +189,6 @@ class QueryMaker implements QueryInterface
         $operators = ['=', '>', '>=', '<', '<=', 'LIKE'];
         if (!in_array($operator, $operators, true)) {
             throw new InvalidArgumentException('Invalid Operator');
-        }
-    }
-
-    private function checkInitialized()
-    {
-        if ($this->statement !== '' && $this->query !== '') {
-            throw new Exception('Invalid Query Order');
         }
     }
 }
