@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace midorikocak\querymaker;
 
+use Exception;
 use InvalidArgumentException;
 
 use function array_keys;
@@ -22,129 +23,131 @@ class QueryMaker implements QueryInterface
     private string $limit;
     private string $orderBy;
 
-    private function __construct()
+    public function __construct()
     {
-        $this->query     = '';
+        $this->query = '';
         $this->statement = '';
-        $this->params    = [];
+        $this->params = [];
 
-        $this->limit   = '';
+        $this->limit = '';
         $this->orderBy = '';
     }
 
-    public static function select($table, array $columns = ['*']) : QueryInterface
+    public function select($table, array $columns = ['*']): QueryInterface
     {
-        $instance            = new QueryMaker();
-        $columnsText         = implode(', ', $columns);
-        $instance->statement = 'SELECT ' . $columnsText . ' FROM ' . $table;
-        $instance->query     = 'SELECT ' . $columnsText . ' FROM ' . $table;
-        return $instance;
+        $this->checkInitialized();
+
+        $columnsText = implode(', ', $columns);
+        $this->statement = 'SELECT ' . $columnsText . ' FROM ' . $table;
+        $this->query = 'SELECT ' . $columnsText . ' FROM ' . $table;
+        return $this;
     }
 
-    public static function update($table, array $values) : QueryInterface
+    public function update($table, array $values): QueryInterface
     {
-        $instance            = new QueryMaker();
-        $instance->statement = 'UPDATE ' . $table . ' SET ';
-        $instance->query     = 'UPDATE ' . $table . ' SET ';
-        $instance->prepareParams($values, ', ');
-        return $instance;
+        $this->checkInitialized();
+
+        $this->statement = 'UPDATE ' . $table . ' SET ';
+        $this->query = 'UPDATE ' . $table . ' SET ';
+        $this->prepareParams($values, ', ');
+        return $this;
     }
 
-    public static function insert($table, array $values) : QueryInterface
+    public function insert($table, array $values): QueryInterface
     {
-        $fields      = implode(', ', array_keys($values));
-        $params      = implode(', ', array_map(fn($key) => ':' . $key, array_keys($values)));
+        $this->checkInitialized();
+        $fields = implode(', ', array_keys($values));
+        $params = implode(', ', array_map(fn($key) => ':' . $key, array_keys($values)));
         $queryValues = implode(', ', array_map(fn($value) => "'$value'", array_values($values)));
 
-        $instance            = new QueryMaker();
-        $instance->statement = "INSERT INTO $table ($fields) VALUES ($params)";
-        $instance->query     = "INSERT INTO $table ($fields) VALUES ($queryValues)";
-        $instance->params    = $values;
+        $this->statement = "INSERT INTO $table ($fields) VALUES ($params)";
+        $this->query = "INSERT INTO $table ($fields) VALUES ($queryValues)";
+        $this->params = $values;
 
-        return $instance;
+        return $this;
     }
 
-    public static function delete($table) : QueryInterface
+    public function delete($table): QueryInterface
     {
-        $instance            = new QueryMaker();
-        $instance->statement = 'DELETE FROM ' . $table;
-        $instance->query     = 'DELETE FROM ' . $table;
-        return $instance;
+        $this->checkInitialized();
+        $this->statement = 'DELETE FROM ' . $table;
+        $this->query = 'DELETE FROM ' . $table;
+        return $this;
     }
 
-    public function where($key, $value, string $operator = '=') : QueryInterface
+    public function where($key, $value, string $operator = '='): QueryInterface
     {
         $this->checkOperator($operator);
 
-        $this->statement   .= ' WHERE ' . $key . $operator . ':' . $key;
-        $this->query       .= ' WHERE ' . $key . $operator . '\'' . $value . '\'';
+        $this->statement .= ' WHERE ' . $key . $operator . ':' . $key;
+        $this->query .= ' WHERE ' . $key . $operator . '\'' . $value . '\'';
         $this->params[$key] = $value;
         return $this;
     }
 
-    public function and($key, $value, string $operator = '=') : QueryInterface
+    public function and($key, $value, string $operator = '='): QueryInterface
     {
         $this->checkOperator($operator);
 
-        $this->query     .= ' AND ';
+        $this->query .= ' AND ';
         $this->statement .= ' AND ';
         $this->prepareParam($key, $value, 'AND', $operator);
         return $this;
     }
 
-    public function orderBy($key, string $order = 'ASC') : QueryInterface
+    public function orderBy($key, string $order = 'ASC'): QueryInterface
     {
         if ($order !== 'DESC' && $order !== 'ASC') {
             throw new InvalidArgumentException('Invalid order value');
         }
-        
+
         $this->orderBy .= ' ORDER BY ' . $key . ' ' . $order;
         return $this;
     }
 
-    public function limit(int $limit) : QueryInterface
+    public function limit(int $limit): QueryInterface
     {
         $this->limit .= ' LIMIT ' . $limit;
         return $this;
     }
 
-    public function offset(int $offset) : QueryInterface
+    public function offset(int $offset): QueryInterface
     {
         $this->limit .= ' OFFSET ' . $offset;
         return $this;
     }
 
-    public function or($key, $value, $operator = '=') : QueryInterface
+    public function or($key, $value, $operator = '='): QueryInterface
     {
         $this->checkOperator($operator);
 
-        $this->query     .= " OR ";
+        $this->query .= " OR ";
         $this->statement .= " OR ";
         $this->prepareParam($key, $value, 'OR');
         return $this;
     }
 
-    public function between($key, $before, $after) : QueryInterface
+    public function between($key, $before, $after): QueryInterface
     {
-        $this->query     .= $key . " BETWEEN $before AND $after";
+        $this->query .= $key . " BETWEEN $before AND $after";
         $this->statement .= $key . ' BETWEEN :before AND :after';
 
         $this->params['before'] = $before;
-        $this->params['after']  = $after;
+        $this->params['after'] = $after;
         return $this;
     }
 
-    public function getQuery() : string
+    public function getQuery(): string
     {
         return $this->query . $this->orderBy . $this->limit;
     }
 
-    public function getStatement() : string
+    public function getStatement(): string
     {
         return $this->statement . $this->orderBy . $this->limit;
     }
 
-    public function getParams() : array
+    public function getParams(): array
     {
         return $this->params;
     }
@@ -152,38 +155,45 @@ class QueryMaker implements QueryInterface
     private function prepareParams(array $values, string $glue, string $operator = '=')
     {
         $this->checkOperator($operator);
-        $params      = [];
+        $params = [];
         $queryValues = [];
 
         foreach ($values as $key => $value) {
             if (!isset($this->params[$key])) {
                 $queryValues[] = $key . $operator . '\'' . $value . '\'';
-                $params []     = $key . $operator . ':' . $key;
+                $params [] = $key . $operator . ':' . $key;
 
                 $this->params[$key] = $value;
             } else {
-                $uniqid        = uniqid('', true);
+                $uniqid = uniqid('', true);
                 $queryValues[] = $key . $operator . '\'' . $value . '\'';
-                $params []     = $key . $operator . ':' . $key . $uniqid;
+                $params [] = $key . $operator . ':' . $key . $uniqid;
 
                 $this->params[$key . $uniqid] = $value;
             }
         }
 
-        $this->query     .= implode($glue, $queryValues);
+        $this->query .= implode($glue, $queryValues);
         $this->statement .= implode($glue, $params);
     }
 
-    private function prepareParam(string $key, $value, string $glue, $operator = '=') : void
+    private function prepareParam(string $key, $value, string $glue, $operator = '='): void
     {
         $this->prepareParams([$key => $value], $glue, $operator);
     }
 
-    private function checkOperator(string $operator) : void
+    private function checkOperator(string $operator): void
     {
         $operators = ['=', '>', '>=', '<', '<=', 'LIKE'];
         if (!in_array($operator, $operators, true)) {
             throw new InvalidArgumentException('Invalid Operator');
+        }
+    }
+
+    private function checkInitialized()
+    {
+        if ($this->statement !== '' && $this->query !== '') {
+            throw new Exception('Invalid Query Order');
         }
     }
 }

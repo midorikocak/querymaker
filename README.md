@@ -33,7 +33,8 @@ There are starter methods to create a query, such as `SELECT` and `UPDATE`.
 ### Select
 
 ``` php
-$queryMaker = midorikocak\querymaker::select('users');
+$queryMaker = new QueryMaker();
+$queryMaker->select('users');
 echo $queryMaker->getQuery();
 ```
 
@@ -47,7 +48,8 @@ SELECT * FROM users
 Fields to select can be specified as well:
 
 ``` php
-$queryMaker = midorikocak\querymaker::select('users', ['id', 'email']);
+$queryMaker = new QueryMaker();
+$queryMaker->select('users', ['id', 'email']);
 echo $queryMaker->getQuery();
 ```
 
@@ -62,7 +64,8 @@ SELECT id, email FROM users
 Field values can include operators, such as: `=`,`>`, `<`,`<=`,`>=`
 
 ``` php
-$queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', '3', '>=');
+$queryMaker = new QueryMaker();
+$queryMaker->select('users', ['id', 'email'])->where('id', '3', '>=');
 echo $queryMaker->getQuery();
 echo $queryMaker->getStatement();
 ```
@@ -77,7 +80,8 @@ SELECT id, email FROM users WHERE id>=:id'
 ### Delete
 
 ``` php
-$queryMaker = midorikocak\querymaker::delete('users');
+$queryMaker = new QueryMaker();
+$queryMaker->delete('users');
 echo $queryMaker->getQuery();
 ```
 
@@ -92,7 +96,8 @@ DELETE FROM users
 To specify `WHERE` clauase use  `where($key, $value)` method.
 
 ``` php
-$queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', 3);
+$queryMaker = new QueryMaker();
+$queryMaker->select('users', ['id', 'email'])->where('id', 3);
 echo $queryMaker->getQuery();
 echo $queryMaker->getStatement();
 ```
@@ -109,7 +114,8 @@ SELECT id, email FROM users WHERE id=:id
 Contraints such as `AND` and `OR`, are methods as well. `and($key, $value)` and `or($key, $value)`
 
 ``` php
-$queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', 3)->and('email', 'mtkocak@gmail.com')->or('username', 'midori');
+$queryMaker = new QueryMaker();
+$queryMaker->select('users', ['id', 'email'])->where('id', 3)->and('email', 'mtkocak@gmail.com')->or('username', 'midori');
 echo $queryMaker->getQuery();
 echo $queryMaker->getStatement();
 ```
@@ -124,7 +130,8 @@ SELECT id, email FROM users WHERE id=:id OR username=:username
 Multiple AND and OR clauses can have same field conditions.
 
 ``` php
-$queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('email', 'mtkocak@gmail.com')->and('id', '>3')->and('id', '<5');
+$queryMaker = new QueryMaker();
+$queryMaker->select('users', ['id', 'email'])->where('email', 'mtkocak@gmail.com')->and('id', '>3')->and('id', '<5');
 ```
 
 ### ORDER BY 
@@ -132,7 +139,8 @@ $queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('e
 To specify `ORDER BY` clauase use  `order($key, $order)` method.
 
 ``` php
-$queryMaker = QueryMaker::select('users')->orderBy('id');
+$queryMaker = new QueryMaker();
+$queryMaker->select('users')->orderBy('id');
 echo $queryMaker->getQuery();
 
 ```
@@ -148,7 +156,8 @@ SELECT * FROM users ORDER BY id ASC
 To specify `OFFSET` and `LIMIT` clauase use  `offset($offset)` and `limit($offset)` methods.
 
 ``` php
-$queryMaker = QueryMaker::select('users')->orderBy('id')->limit(3)->offset(2);
+$queryMaker = new QueryMaker();
+$queryMaker->select('users')->orderBy('id')->limit(3)->offset(2);
 echo $queryMaker->getQuery();
 ```
 
@@ -165,8 +174,9 @@ It's also possible to get values as key value pair to easily execute.
 ``` php
 $db = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
 
+$queryMaker = new QueryMaker();
 
-$queryMaker = midorikocak\querymaker::select('users', ['id', 'email'])->where('id', 3)->and('email', 'mtkocak@gmail.com')->or('username', 'midori');
+$queryMaker->select('users', ['id', 'email'])->where('id', 3)->and('email', 'mtkocak@gmail.com')->or('username', 'midori');
 
 $statement = $db->prepare($query->getStatement());
 
@@ -178,7 +188,9 @@ $statement->execute($query->getParams());
 To specify `INSERT` operation,  `insert()` method, expects a key value array.
 
 ``` php
-$queryMaker = midorikocak\querymaker::insert('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak']);
+
+$queryMaker = new QueryMaker();
+$queryMaker->insert('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak']);
 echo $queryMaker->getQuery();
 echo $queryMaker->getStatement();
 ```
@@ -196,7 +208,8 @@ INSERT INTO users (email, username) VALUES (:email, :username)
 To specify `UPDATE` operation, handy `update()` method, expects a key value array. All statement params are generated thoroughly. 
 
 ``` php
-$queryMaker = midorikocak\querymaker::update('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak'])->where('id', 3);
+$queryMaker = new QueryMaker();
+$queryMaker->update('users', ['email' => 'mtkocak@gmail.com', 'username' => 'midorikocak'])->where('id', 3);
 echo $queryMaker->getQuery();
 echo $queryMaker->getStatement();
 ```

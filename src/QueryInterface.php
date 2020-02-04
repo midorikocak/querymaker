@@ -10,13 +10,13 @@ interface QueryInterface
      * @param string[] $columns
      * @return static
      */
-    public static function select(string $table, array $columns = ['*']) : self;
+    public function select(string $table, array $columns = ['*']) : self;
 
-    public static function delete(string $table) : self;
+    public function delete(string $table) : self;
 
-    public static function update(string $table, array $values) : self;
+    public function update(string $table, array $values) : self;
 
-    public static function insert(string $table, array $values) : self;
+    public function insert(string $table, array $values) : self;
 
     public function where(string $key, $value, string $operator = '=') : self;
 
