@@ -64,18 +64,18 @@ final class QueryTest extends TestCase
         $this->assertEquals('SELECT id, email FROM users', $this->queryMaker->getStatement());
     }
 
-    public function testSelectFieldsWhere()
-    {
-        $this->queryMaker->select('users', ['id', 'email'])->where('id', 3);
-        $this->assertEquals('SELECT id, email FROM users WHERE id=\'3\'', $this->queryMaker->getQuery());
-        $this->assertEquals('SELECT id, email FROM users WHERE id=:id', $this->queryMaker->getStatement());
-    }
-
     public function testSelectFieldsWhereOperator()
     {
         $this->queryMaker->select('users', ['id', 'email'])->where('id', '3', '>=');
-        $this->assertEquals('SELECT id, email FROM users WHERE id>=\'3\'', $this->queryMaker->getQuery());
-        $this->assertEquals('SELECT id, email FROM users WHERE id>=:id', $this->queryMaker->getStatement());
+        $this->assertEquals('SELECT id, email FROM users WHERE id >= \'3\'', $this->queryMaker->getQuery());
+        $this->assertEquals('SELECT id, email FROM users WHERE id >= :id', $this->queryMaker->getStatement());
+    }
+
+    public function testSelectFieldsLIKE()
+    {
+        $this->queryMaker->select('users', ['id', 'email'])->where('email', '%gmail%', 'LIKE');
+        $this->assertEquals('SELECT id, email FROM users WHERE email LIKE \'%gmail%\'', $this->queryMaker->getQuery());
+        $this->assertEquals('SELECT id, email FROM users WHERE email LIKE :email', $this->queryMaker->getStatement());
     }
 
     public function testUpdate()
@@ -88,11 +88,11 @@ final class QueryTest extends TestCase
             3
         );
         $this->assertEquals(
-            "UPDATE users SET email='mtkocak@gmail.com', username='midorikocak' WHERE id='3'",
+            "UPDATE users SET email = 'mtkocak@gmail.com', username = 'midorikocak' WHERE id = '3'",
             $this->queryMaker->getQuery()
         );
         $this->assertEquals(
-            "UPDATE users SET email=:email, username=:username WHERE id=:id",
+            "UPDATE users SET email = :email, username = :username WHERE id = :id",
             $this->queryMaker->getStatement()
         );
     }
@@ -115,11 +115,11 @@ final class QueryTest extends TestCase
     {
         $this->queryMaker->select('users', ['id', 'email'])->where('id', 3)->and('username', 'midori');
         $this->assertEquals(
-            "SELECT id, email FROM users WHERE id='3' AND username='midori'",
+            "SELECT id, email FROM users WHERE id = '3' AND username = 'midori'",
             $this->queryMaker->getQuery()
         );
         $this->assertEquals(
-            "SELECT id, email FROM users WHERE id=:id AND username=:username",
+            "SELECT id, email FROM users WHERE id = :id AND username = :username",
             $this->queryMaker->getStatement()
         );
     }
@@ -128,11 +128,11 @@ final class QueryTest extends TestCase
     {
         $this->queryMaker->select('users', ['id', 'email'])->where('id', 3)->or('username', 'midori');
         $this->assertEquals(
-            "SELECT id, email FROM users WHERE id='3' OR username='midori'",
+            "SELECT id, email FROM users WHERE id = '3' OR username = 'midori'",
             $this->queryMaker->getQuery()
         );
         $this->assertEquals(
-            "SELECT id, email FROM users WHERE id=:id OR username=:username",
+            "SELECT id, email FROM users WHERE id = :id OR username = :username",
             $this->queryMaker->getStatement()
         );
     }
@@ -144,11 +144,11 @@ final class QueryTest extends TestCase
             3
         )->and('email', 'mtkocak@gmail.com')->or('username', 'midori');
         $this->assertEquals(
-            "SELECT id, email FROM users WHERE id='3' AND email='mtkocak@gmail.com' OR username='midori'",
+            "SELECT id, email FROM users WHERE id = '3' AND email = 'mtkocak@gmail.com' OR username = 'midori'",
             $this->queryMaker->getQuery()
         );
         $this->assertEquals(
-            "SELECT id, email FROM users WHERE id=:id AND email=:email OR username=:username",
+            "SELECT id, email FROM users WHERE id = :id AND email = :email OR username = :username",
             $this->queryMaker->getStatement()
         );
     }

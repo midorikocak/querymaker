@@ -81,8 +81,8 @@ class QueryMaker implements QueryInterface
     {
         $this->checkOperator($operator);
 
-        $this->statement .= ' WHERE ' . $key . $operator . ':' . $key;
-        $this->query .= ' WHERE ' . $key . $operator . '\'' . $value . '\'';
+        $this->statement .= ' WHERE ' . $key . ' ' . $operator . ' :' . $key;
+        $this->query .= ' WHERE ' . $key . ' ' . $operator . ' \'' . $value . '\'';
         $this->params[$key] = $value;
         return $this;
     }
@@ -162,14 +162,14 @@ class QueryMaker implements QueryInterface
 
         foreach ($values as $key => $value) {
             if (!isset($this->params[$key])) {
-                $queryValues[] = $key . $operator . '\'' . $value . '\'';
-                $params [] = $key . $operator . ':' . $key;
+                $queryValues[] = $key . ' ' . $operator . ' \'' . $value . '\'';
+                $params [] = $key . ' ' . $operator . ' :' . $key;
 
                 $this->params[$key] = $value;
             } else {
                 $uniqid = uniqid('', true);
-                $queryValues[] = $key . $operator . '\'' . $value . '\'';
-                $params [] = $key . $operator . ':' . $key . $uniqid;
+                $queryValues[] = $key . ' ' . $operator . ' \'' . $value . '\'';
+                $params [] = $key . ' ' . $operator . ' :' . $key . $uniqid;
 
                 $this->params[$key . $uniqid] = $value;
             }

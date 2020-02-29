@@ -170,3 +170,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Nothing
+
+## [1.4.2] - 2020-02-28
+
+### Added
+- Nothing
+
+### Deprecated
+- Nothing
+
+### Fixed
+- LIKE operator
+
+### Removed
+- Nothing
+
+### Security
+- Nothing
