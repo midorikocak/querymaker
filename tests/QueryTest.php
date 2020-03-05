@@ -29,6 +29,13 @@ final class QueryTest extends TestCase
         $this->assertEquals('SELECT * FROM users', $this->queryMaker->getStatement());
     }
 
+    public function testCount(): void
+    {
+        $this->queryMaker->count('users');
+        $this->assertEquals('SELECT COUNT(*) FROM users', $this->queryMaker->getQuery());
+        $this->assertEquals('SELECT COUNT(*) FROM users', $this->queryMaker->getStatement());
+    }
+
     public function testOrder(): void
     {
         $this->queryMaker->select('users')->orderBy('id');
@@ -67,6 +74,17 @@ final class QueryTest extends TestCase
     public function testSelectFieldsWhereOperator()
     {
         $this->queryMaker->select('users', ['id', 'email'])->where('id', '3', '>=');
+        $this->assertEquals('SELECT id, email FROM users WHERE id >= \'3\'', $this->queryMaker->getQuery());
+        $this->assertEquals('SELECT id, email FROM users WHERE id >= :id', $this->queryMaker->getStatement());
+    }
+
+    public function testGetCounterQuery()
+    {
+        $this->queryMaker->select('users', ['id', 'email'])->where('id', '3', '>=');
+        $counterQuery = $this->queryMaker->count();
+        $this->assertEquals('SELECT COUNT(*) FROM users WHERE id >= \'3\'', $counterQuery->getQuery());
+        $this->assertEquals('SELECT COUNT(*) FROM users WHERE id >= :id', $counterQuery->getStatement());
+
         $this->assertEquals('SELECT id, email FROM users WHERE id >= \'3\'', $this->queryMaker->getQuery());
         $this->assertEquals('SELECT id, email FROM users WHERE id >= :id', $this->queryMaker->getStatement());
     }

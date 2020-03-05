@@ -11,6 +11,7 @@ use function array_map;
 use function array_values;
 use function implode;
 use function in_array;
+use function preg_replace;
 use function uniqid;
 
 class QueryMaker implements QueryInterface
@@ -44,6 +45,32 @@ class QueryMaker implements QueryInterface
         $this->statement = 'SELECT ' . $columnsText . ' FROM ' . $table;
         $this->query = 'SELECT ' . $columnsText . ' FROM ' . $table;
         return $this;
+    }
+
+    public function count($table = null): QueryInterface
+    {
+        if ($table && $this->query === '') {
+            $this->reset();
+            $this->statement = 'SELECT COUNT(*) FROM ' . $table;
+            $this->query = 'SELECT COUNT(*) FROM ' . $table;
+            return $this;
+        }
+
+        if (!$table && $this->query === '') {
+            throw new InvalidArgumentException('Cannot count');
+        }
+
+        $query = $this->query;
+        $statement = $this->statement;
+        $this->query = preg_replace('/SELECT .*? FROM/', 'SELECT COUNT(*) FROM', $this->query);
+        $this->statement = preg_replace('/SELECT .*? FROM/', 'SELECT COUNT(*) FROM', $this->statement);
+
+        $toReturn = clone $this;
+
+        $this->query = $query;
+        $this->statement = $statement;
+
+        return $toReturn;
     }
 
     public function update($table, array $values): QueryInterface
