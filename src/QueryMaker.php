@@ -47,7 +47,7 @@ class QueryMaker implements QueryInterface
         return $this;
     }
 
-    public function count($table = null): QueryInterface
+    public function count($table = null, bool $resetLimit = false): QueryInterface
     {
         if ($table && $this->query === '') {
             $this->reset();
@@ -62,13 +62,17 @@ class QueryMaker implements QueryInterface
 
         $query = $this->query;
         $statement = $this->statement;
+        $limit = $this->limit;
+
         $this->query = preg_replace('/SELECT .*? FROM/', 'SELECT COUNT(*) FROM', $this->query);
         $this->statement = preg_replace('/SELECT .*? FROM/', 'SELECT COUNT(*) FROM', $this->statement);
+        $this->limit = '';
 
         $toReturn = clone $this;
 
         $this->query = $query;
         $this->statement = $statement;
+        $this->limit = $limit;
 
         return $toReturn;
     }
