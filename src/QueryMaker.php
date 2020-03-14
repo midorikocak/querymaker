@@ -156,7 +156,7 @@ class QueryMaker implements QueryInterface
 
         $this->query .= " OR ";
         $this->statement .= " OR ";
-        $this->prepareParam($key, $value, 'OR');
+        $this->prepareParam($key, $value, 'OR', $operator);
         return $this;
     }
 

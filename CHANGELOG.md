@@ -221,3 +221,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Nothing
+
+## [1.4.4] - 2020-03-14
+
+### Added
+- Nothing
+
+### Deprecated
+- Nothing
+
+### Fixed
+- OR operator
+
+### Removed
+- Nothing
+
+### Security
+- Nothing
