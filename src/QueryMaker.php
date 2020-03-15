@@ -100,6 +100,43 @@ class QueryMaker implements QueryInterface
         return $this;
     }
 
+    public function join(
+        string $direction,
+        string $remoteTable,
+        string $leftField,
+        string $rightField,
+        string $operator = '='
+    ): QueryInterface {
+        $this->checkOperator($operator);
+        $this->checkDirection($direction);
+
+        $this->query .= ' '
+            . $direction
+            . ' JOIN '
+            . $remoteTable
+            . ' ON '
+            . $leftField
+            . ' '
+            . $operator
+            . ' '
+            . $remoteTable
+            . '.'
+            . $rightField;
+        $this->statement .= ' '
+            . $direction
+            . ' JOIN '
+            . $remoteTable
+            . ' ON '
+            . $leftField
+            . ' '
+            . $operator
+            . ' '
+            . $remoteTable
+            . '.'
+            . $rightField;
+        return $this;
+    }
+
     public function delete($table): QueryInterface
     {
         $this->reset();
@@ -220,6 +257,14 @@ class QueryMaker implements QueryInterface
         $operators = ['=', '>', '>=', '<', '<=', 'LIKE'];
         if (!in_array($operator, $operators, true)) {
             throw new InvalidArgumentException('Invalid Operator');
+        }
+    }
+
+    private function checkDirection(string $direction): void
+    {
+        $directions = ['RIGHT', 'LEFT', 'INNER'];
+        if (!in_array($direction, $directions, true)) {
+            throw new InvalidArgumentException('Invalid Direction');
         }
     }
 }

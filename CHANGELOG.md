@@ -238,3 +238,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Nothing
+
+## [1.4.6] - 2020-03-15
+
+### Added
+- Basic JOINS (LEFT, RIGHT, INNER)
+
+### Deprecated
+- Nothing
+
+### Fixed
+- Nothing
+
+### Removed
+- Nothing
+
+### Security
+- Nothing

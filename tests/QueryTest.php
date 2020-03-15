@@ -78,6 +78,16 @@ final class QueryTest extends TestCase
         $this->assertEquals('SELECT id, email FROM users WHERE id >= :id', $this->queryMaker->getStatement());
     }
 
+    public function testJoin()
+    {
+        $this->queryMaker
+            ->select('articles', ['id', 'title'])
+            ->where('id', '3', '>=')
+            ->join('INNER', 'articles_tags', 'id', 'article_id', '=');
+        $this->assertEquals('SELECT id, title FROM articles WHERE id >= \'3\' INNER JOIN articles_tags ON id = articles_tags.article_id', $this->queryMaker->getQuery());
+        $this->assertEquals('SELECT id, title FROM articles WHERE id >= :id INNER JOIN articles_tags ON id = articles_tags.article_id', $this->queryMaker->getStatement());
+    }
+
     public function testGetCounterQuery()
     {
         $this->queryMaker->select('users', ['id', 'email'])->where('id', '3', '>=');
