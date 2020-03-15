@@ -255,3 +255,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Nothing
+
+## [1.4.7] - 2020-03-15
+
+### Added
+- Nothing
+
+### Deprecated
+- Nothing
+
+### Fixed
+- Query Interface
+
+### Removed
+- Nothing
+
+### Security
+- Nothing
